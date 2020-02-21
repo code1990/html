@@ -2,9 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>JavaScript 简介 </title>
+    <script>
+        // JavaScript 是脚本语言
+
+        // JavaScript：直接写入 HTML 输出流
+        //JavaScript：对事件的反应
+        //JavaScript：改变 HTML 内容
+        //JavaScript：改变 HTML 图像
+        //JavaScript：改变 HTML 样式
+        //JavaScript：验证输入
+        function changeColor() {
+
+            var element = document.getElementById("myDiv");
+            var flag = document.getElementById("flag").getAttribute("value");
+            var cssTxt = "width:100px;height:100px;border: solid 1px black;";
+            if (flag === "") {
+                element.style.cssText = cssTxt + "background-color:red";
+                document.getElementById("flag").setAttribute("value", "1");
+            } else {
+                element.style.cssText = cssTxt + "background-color:blue";
+                document.getElementById("flag").setAttribute("value", "");
+            }
+        }
+    </script>
 </head>
 <body>
+<input type="hidden" id="flag" value="">
+<div id="myDiv" style="width:100px;height:100px;border: solid 1px black" onclick="changeColor()"></div>
 
 </body>
 </html>

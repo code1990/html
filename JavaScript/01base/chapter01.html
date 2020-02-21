@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>JavaScript 教程</title>
+    <script>
+        /*
+        *   HTML 定义了网页的内容
+            CSS 描述了网页的布局
+            JavaScript 网页的行为
+        * */
+        function displayDate() {
+            document.getElementById("demo").innerHTML = Date();
+        }
+    </script>
 </head>
 <body>
-
+<p id="demo">我的第一个 JavaScript 程序</p>
+<button type="button" onclick="displayDate()">显示日期</button>
 </body>
 </html>
