@@ -3,8 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Vue.js 循环语句</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
 </head>
 <body>
-
+<div id="app">
+    <!-- v-for 可以绑定数据到数组来渲染一个列表：-->
+    <ol>
+        <li v-for="site in sites">
+            {{ site.name }}
+        </li>
+    </ol>
+    <!--    模板中使用 v-for：-->
+    <ul>
+        <template v-for="site in sites">
+            <li>{{ site.name }}</li>
+            <li>--------------</li>
+        </template>
+    </ul>
+    <!--v-for 可以通过一个对象的属性来迭代数据-->
+    <ul>
+        <li v-for="value in object">
+            {{ value }}
+        </li>
+    </ul>
+    <!--你也可以提供第二个的参数为键名：-->
+    <ul>
+        <li v-for="(value, key) in object">
+            {{ key }} : {{ value }}
+        </li>
+    </ul>
+    <!--第三个参数为索引-->
+    <ul>
+        <li v-for="(value, key, index) in object">
+            {{ index }}. {{ key }} : {{ value }}
+        </li>
+    </ul>
+    <!--v-for 迭代整数-->
+    <ul>
+        <li v-for="n in 10">
+            {{ n }}
+        </li>
+    </ul>
+</div>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            sites: [
+                {
+                    name: "html1"
+                }
+                ,
+                {
+                    name: "html2"
+                }
+                ,
+                {
+                    name: "html3"
+                }
+            ],
+            object: {
+                name: '菜鸟教程',
+                url: 'http://www.runoob.com',
+                slogan: '学的不仅是技术，更是梦想！'
+            }
+        }
+    })
+</script>
 </body>
 </html>
