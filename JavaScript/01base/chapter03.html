@@ -3,8 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        //JavaScript 用法
+        //HTML 中的脚本必须位于 <script> 与 <\/script> 标签之间。
+        //<head> 中的 JavaScript 函数
+        function myFunction() {
+            document.getElementById("demo").innerHTML = "我的第一个 JavaScript 函数";
+        }
+    </script>
 </head>
 <body>
-
+<p id="demo">一个段落</p>
+<button type="button" onclick="myFunction()">尝试一下</button>
+<p id="demo2">一个段落</p>
+<button type="button" onclick="myFunction2()">尝试一下</button>
+<script>
+    //<body> 中的 JavaScript
+    function myFunction2()
+    {
+        document.getElementById("demo2").innerHTML="我的第一个 JavaScript 函数";
+    }
+</script>
+<!--外部的 JavaScript-->
+<!--<script src="myScript.js"></script>-->
 </body>
 </html>

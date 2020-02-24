@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        //JavaScript 输出
+        //JavaScript 显示数据
+        //JavaScript 可以通过不同的方式来输出数据：
+        //使用 window.alert() 弹出警告框。
+        //使用 document.write() 方法将内容写到 HTML 文档中。
+        //使用 innerHTML 写入到 HTML 元素。
+        //使用 console.log() 写入到浏览器的控制台。
+        //使用 window.alert()
+        window.alert(5 + 6);
+        //操作 HTML 元素
+        document.getElementById("demo").innerHTML = "段落已修改。";
+        //document.write(Date());
+        //使用 console.log() 方法在浏览器中显示 JavaScript 值。
+        var a = 5;
+        var b = 6;
+        var c = a + b;
+        console.log(c);
+    </script>
 </head>
 <body>
-
+<p id="demo">我的第一个段落</p>
+<button onclick="myFunction()">点我</button>
+<script>
+    function myFunction() {
+        //使用 document.write() 仅仅向文档输出写内容。
+        document.write(Date());
+    }
+</script>
 </body>
 </html>
