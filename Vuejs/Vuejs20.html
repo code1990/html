@@ -6,6 +6,44 @@
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
 </head>
 <body>
+<!--通过使用 $watch 属性来实现数据的监听，$watch 必须添加在 Vue 实例之外才能实现正确的响应-->
+<div id="app">
+    <p style="font-size:25px;">计数器: {{ counter }}</p>
+    <button @click="counter++" style="font-size:25px;">点我</button>
+    <!--Vue.set 方法用于设置对象的属性，它可以解决 Vue 无法检测添加属性的限制-->
+    <p style = "font-size:25px;">计数器: {{ products.id }}</p>
+    <button @click = "products.id++" style = "font-size:25px;">点我</button>
+</div>
+<script>
+    var myproduct = {"id":1, name:"book", "price":"20.00"};
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            counter: 1,
+            products: myproduct
+        }
+    });
+    vm.$watch('counter', function (nval, oval) {
+        alert('计数器值的变化 :' + oval + ' 变为 ' + nval + '!');
+    });
+    setTimeout(
+        function () {
+            vm.counter += 20;
+        }, 10000
+    );
+    /*如果我们想给 myproduct 数组添加一个或多个属性，我们可以在 Vue 实例创建后使用以下代码
+    * 在产品中添加了数量属性 qty，但是 get/set 方法只可用于 id，name 和 price 属性，却不能在 qty 属性中使用。
+    * Vue 主要在开始时创建所有属性。 如果我们要实现这个功能，可以通过 Vue.set 来实现
+    * */
+    //vm.products.qty = "1";
+    Vue.set(myproduct, 'qty', 1);
+    //Vue.delete 用于删除动态添加的属性 语法格式：
+    Vue.delete(myproduct, 'price');
+    console.log(vm);
+    vm.$watch('products.id', function(nval, oval) {
+        alert('计数器值的变化 :' + oval + ' 变为 ' + nval + '!');
+    });
+</script>
 
 </body>
 </html>

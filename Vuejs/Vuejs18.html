@@ -80,8 +80,100 @@ Axios 是一个基于 Promise 的 HTTP 库，可以用在浏览器和 node.js �
                 .then(axios.spread(function (acct, perms) {
                     // 两个请求现在都执行完成
                 }));
+            //可以通过向 axios 传递相关配置来创建请求。
+            //axios(config);
+            // 发送 POST 请求
+            axios({
+                method: 'post',
+                url: '/user/12345',
+                data: {
+                    firstName: 'Fred',
+                    lastName: 'Flintstone'
+                }
+            });
+            //  GET 请求远程图片
+            axios({
+                method: 'get',
+                url: 'http://bit.ly/2mTM3nY',
+                responseType: 'stream'
+            })
+            .then(function (response) {
+                response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+            });
+            //axios(url[, config ]);
+            // 发送 GET 请求（默认的方法）
+            axios('/user/12345');
+            //官方为所有支持的请求方法提供了别名，可以直接使用别名来发起请求
+            //axios.request(config)
+            //axios.get(url[, config])
+            //axios.delete(url[, config])
+            //axios.head(url[, config])
+            //axios.post(url[, data[, config]])
+            //axios.put(url[, data[, config]])
+            //axios.patch(url[, data[, config]])
+            //处理并发请求的助手函数：
+            //axios.all(iterable)
+            //axios.spread(callback)
+
+
         }
-    })
+    });
+    ////创建实例
+    const instance = axios.create({
+        baseURL: 'https://some-domain.com/api/',
+        timeout: 1000,
+        headers: {'X-Custom-Header': 'foobar'}
+    });
+    //以下是可用的实例方法。指定的配置将与实例的配置合并：
+    //axios#request(config)
+    //axios#get(url[, config])
+    //axios#delete(url[, config])
+    //axios#head(url[, config])
+    //axios#post(url[, data[, config]])
+    //axios#put(url[, data[, config]])
+    //axios#patch(url[, data[, config]])
+    //请求配置项
+    //响应结构
+    //全局的 axios 默认值：
+    //axios.defaults.baseURL = 'https://api.example.com';
+    //axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+    //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    //配置的优先顺序
+    //配置会以一个优先顺序进行合并。这个顺序是：在 lib/defaults.js 找到的库的默认值，然后是实例的 defaults 属性，最后是请求的 config 参数。
+    //拦截器
+    // 在请求或响应被 then 或 catch 处理前拦截它们。
+    // 添加请求拦截器
+    axios.interceptors.request.use(function (config) {
+        // 在发送请求之前做些什么
+        return config;
+    }, function (error) {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+    });
+
+    // 添加响应拦截器
+    axios.interceptors.response.use(function (response) {
+        // 对响应数据做点什么
+        return response;
+    }, function (error) {
+        // 对响应错误做点什么
+        return Promise.reject(error);
+    });
+    //使用 cancel token 取消请求。
+    var CancelToken = axios.CancelToken;
+    var source = CancelToken.source();
+
+    axios.get('/user/12345', {
+        cancelToken: source.token
+    }).catch(function(thrown) {
+        if (axios.isCancel(thrown)) {
+            console.log('Request canceled', thrown.message);
+        } else {
+            // 处理错误
+        }
+    });
+    // 取消请求（message 参数是可选的）
+    source.cancel('Operation canceled by the user.');
 </script>
 </body>
 </html>
