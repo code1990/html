@@ -6,6 +6,82 @@
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
 </head>
 <body>
+<!--Vue.js 2.0 版本推荐使用 axios 来完成 ajax 请求。
+Axios 是一个基于 Promise 的 HTTP 库，可以用在浏览器和 node.js 中。-->
+<!--npm install axios-->
+<div id="app">
+    <h1>网站列表</h1>
+    <div
+            v-for="site in info"
+    >
+        {{ site.name }}
+    </div>
+</div>
+<script type="text/javascript">
+    //执行多个并发请求
+    function getUserAccount() {
+        return axios.get('/user/12345');
+    }
 
+    function getUserPermissions() {
+        return axios.get('/user/12345/permissions');
+    }
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                info: null
+            }
+        },
+        mounted() {
+            axios
+                .get('https://www.runoob.com/try/ajax/json_demo.json')
+                //使用 response.data 读取 JSON 数据
+                .then(response => (this.info = response.data.sites))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            //GET 方法传递参数格式如下
+            // 直接在 URL 上添加参数 ID=12345
+            axios.get('/user?ID=12345')
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            // 也可以通过 params 设置参数：
+            axios.get('/user', {
+                params: {
+                    ID: 12345
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            //POST 方法传递参数格式如下
+            axios.post('/user', {
+                firstName: 'Fred',        // 参数 firstName
+                lastName: 'Flintstone'    // 参数 lastName
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            //执行多个并发请求
+            axios.all([getUserAccount(), getUserPermissions()])
+                .then(axios.spread(function (acct, perms) {
+                    // 两个请求现在都执行完成
+                }));
+        }
+    })
+</script>
 </body>
 </html>

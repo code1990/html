@@ -6,6 +6,155 @@
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
 </head>
 <body>
+<!--组件可以扩展 HTML 元素，封装可重用的代码-->
+<!--组件系统让我们可以用独立可复用的小组件来构建大型应用-->
+<!--注册一个全局组件语法格式如下-->
+<!--Vue.component(tagName, options)-->
+<div id="app">
+    <!--所有实例都能用全局组件-->
+    <Globalrunoob></Globalrunoob>
+    <!--在实例选项中注册局部组件-->
+    <runoob></runoob>
+    <!--父组件的数据需要通过 props 把数据传给子组件-->
+    <child message="hello!"></child>
+    <!--用 v-bind 动态绑定 props 的值到父组件的数据中-->
+    <div>
+        <input v-model="parentMsg">
+        <br>
+        <son v-bind:message="parentMsg"></son>
+    </div>
+    <!--使用 v-bind 指令将 todo 传到每一个重复的组件中-->
+    <ol>
+        <todo-item v-for="item in sites" v-bind:todo="item"></todo-item>
+    </ol>
+    <!--定制 prop 的验证方式-->
 
+    <!--父组件是使用 props 传递数据给子组件，但如果子组件要把数据传递回去，就需要使用自定义事件！
+我们可以使用 v-on 绑定自定义事件, 每个 Vue 实例都实现了事件接口(Events interface)，即：
+使用 $on(eventName) 监听事件
+使用 $emit(eventName) 触发事件
+另外，父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件-->
+    <div>
+        <p>{{ total }}</p>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+    </div>
+
+    <!--如果你想在某个组件的根元素上监听一个原生事件。可以使用 .native 修饰 v-on-->
+    <my-component v-on:click.native="doTheThing"></my-component>
+</div>
+<!--可以在实例选项中注册局部组件，这样组件只能在这个实例中使用-->
+<!--prop 是子组件用来接受父组件传递过来的数据的一个自定义属性。-->
+<!--父组件的数据需要通过 props 把数据传给子组件-->
+
+<script>
+    // 注册全局组件实例
+    Vue.component('Globalrunoob', {
+        template: '<h1>自定义组件!</h1>'
+    });
+    // 注册局部组件实例
+    var Child = {
+        template: '<h1>自定义组件!</h1>'
+    };
+    // 注册
+    Vue.component('child', {
+        // 声明 props
+        props: ['message'],
+        // 同样也可以在 vm 实例中像 "this.message" 这样使用
+        template: '<span>{{ message }}</span>'
+    });
+    // 注册
+    Vue.component('son', {
+        // 声明 props
+        props: ['message'],
+        // 同样也可以在 vm 实例中像 "this.message" 这样使用
+        template: '<span>{{ message }}</span>'
+    });
+    //注册
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    });
+    //为了定制 prop 的验证方式，你可以为 props 中的值提供一个带有验证需求的对象，而不是一个字符串数组
+    Vue.component('my-component', {
+        props: {
+            // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+            propA: Number,
+            // 多个可能的类型
+            propB: [String, Number],
+            // 必填的字符串
+            propC: {
+                type: String,
+                required: true
+            },
+            // 带有默认值的数字
+            propD: {
+                type: Number,
+                default: 100
+            },
+            // 带有默认值的对象
+            propE: {
+                type: Object,
+                // 对象或数组默认值必须从一个工厂函数获取
+                default: function () {
+                    return { message: 'hello' }
+                }
+            },
+            // 自定义验证函数
+            propF: {
+                validator: function (value) {
+                    // 这个值必须匹配下列字符串中的一个
+                    return ['success', 'warning', 'danger'].indexOf(value) !== -1
+                }
+            }
+        }
+    });
+    var buttonCounter2Data = {
+        count: 0
+    }
+    //
+    Vue.component('button-counter', {
+        template: '<button v-on:click="incrementHandler">{{ counter }}</button>',
+        // data 不是一个对象，而是一个函数
+        //每个实例可以维护一份被返回对象的独立的拷贝，如果 data 是一个对象则会影响到其他实例
+        data: function () {
+            return {
+                counter: 0
+            }
+        },
+        /*data: function () {
+            // data 选项是一个对象，会影响到其他实例
+            return buttonCounter2Data
+        },*/
+        methods: {
+            incrementHandler: function () {
+                this.counter += 1;
+                this.$emit('increment')
+            }
+        },
+    });
+    // 创建根实例
+    new Vue({
+        el: '#app',
+        components: {
+            // <runoob> 将只在父模板可用
+            'runoob': Child
+        },
+        data: {
+            parentMsg: '父组件内容',
+            sites: [
+                {text: 'Runoob'},
+                {text: 'Google'},
+                {text: 'Taobao'}
+            ],
+            total: 0
+        },
+        methods: {
+            incrementTotal: function () {
+                this.total += 1
+            }
+        }
+    })
+</script>
 </body>
 </html>
